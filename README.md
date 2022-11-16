@@ -1,6 +1,8 @@
 # Get-Waifu
 PowerShell code to pull all sorts of media off websites, reliably, and in the best possible quality.
 
+**UPDATE:** After a certain billionaire decided to overhaul Twitter's code, it broke my code and now Twitter downloads will not work. I'll work on this as soon as I have the time to.
+
 ## Disclaimer
 This is a script in its VERY early stages. I *cannot* guarantee this working on ANY other setup than mine. If you really, *really* want this to work on your PC, ping me incase setup goes wrong.
 

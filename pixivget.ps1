@@ -5,6 +5,13 @@
 # i.e.: https://www.pixiv.net/en/artworks/100457246 -> sauce is 100457246
 
 
+### -----------------------------------------
+### Includes
+### -----------------------------------------
+
+. "$PSScriptRoot\fxns.ps1"
+
+
 
 ### -----------------------------------------
 ### Preferences
@@ -40,14 +47,6 @@ function Display-Size([string]$file) {
 			Write-Host " [Size: ${mbytes} MB (${bytes} bytes)]"
 		}
 	}
-}
-
-function Remove-IllegalChars([string]$str) {
-	$illegalCharsArr = [System.IO.Path]::GetInvalidFileNameChars()
-	$illegalChars = [RegEx]::Escape(-join $illegalCharsArr)
-	$ret = [regex]::Replace($str, "[${illegalChars}]", '_')
-
-	return $ret
 }
 
 

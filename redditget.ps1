@@ -67,11 +67,6 @@ function Vid-Id([string]$link) {
 	return $ret
 }
 
-function Give-FileType([string]$filename) {
-	$substrs = $filename -split '\.'
-	return $substrs[$substrs.length - 1]
-}
-
 
 
 ### -----------------------------------------

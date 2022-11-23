@@ -1,4 +1,13 @@
 
+
+### -----------------------------------------
+### Includes
+### -----------------------------------------
+
+. "$PSScriptRoot\fxns.ps1"
+
+
+
 ### -----------------------------------------
 ### Preferences
 ### -----------------------------------------
@@ -66,19 +75,6 @@ function Vid-Id([string]$link) {
 	[string]${ret}=((select-string -allmatches -pattern "/[A-Za-z0-9_-]{13}/" -inputobject ${link}).matches.value | out-string)
 	$ret = $ret.substring(1, $ret.length - 4)
 	return $ret
-}
-
-function Remove-IllegalChars([string]$str) {
-	$illegalCharsArr = [System.IO.Path]::GetInvalidFileNameChars()
-	$illegalChars = [RegEx]::Escape(-join $illegalCharsArr)
-	$ret = [regex]::Replace($str, "[${illegalChars}]", '_')
-
-	return $ret
-}
-
-function Give-FileType([string]$filename) {
-	$substrs = $filename -split '\.'
-	return $substrs[$substrs.length - 1]
 }
 
 function Remove-TailLink([string]$tweet) {

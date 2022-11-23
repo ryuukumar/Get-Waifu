@@ -1,5 +1,7 @@
 $prefs = new-object psobject
 
+$cmdlist = "file"
+
 function save-log([string]$message) {
 	$logpath = $prefs.logpath
 	if (-not(test-path "$logpath")) {
@@ -45,6 +47,29 @@ function Get-Filename([string]$path) {
 	return $pathcomponents[$pathcomponents.length - 1]
 }
 
+function Is-Cmd([string]$suspect) {
+	$susargs = $suspect -split ' '
+	if ($cmdlist.contains($susargs[0])) {
+		return $true
+	}
+	return $false
+}
+
+function Parse-Cmd([string]$input) {
+	$inargs = $input -split ' '
+	switch ($inargs[0]) {
+		"file" {
+			if ($inargs.length -lt 3) {
+				send-msg ("Incorrect command syntax: ")
+			}
+			$reqfile = $inargs[1]
+			$reqprop = $inargs[2]
+			send-msg ("Sending property " + $reqprop + " of file " + $reqfile)
+		}
+		Default {}
+	}
+}
+
 cls
 echo "TELEGRAM.PS1"
 
@@ -77,6 +102,11 @@ else
 }
 
 $url='https://api.telegram.org/bot{0}' -f $prefs.token
+<#
+if (-not(Test-Connection "telegram.org" -Quiet)) {
+	save-log ("No internet connection (or Telegram servers are down.)")
+	exit
+}#>
 
 $lastchecked_date = (get-date 01.01.1970).addseconds($prefs.lastchecked)
 $lastchecked_date = $lastchecked_date.addhours($prefs.utchours)
@@ -93,7 +123,13 @@ foreach ($msg in $inmessages.result.message) {
 		if ($msg.chat.username -eq $prefs.authuname) {
 			write-host -nonewline "Found authorized message: "
 			echo $msg.text
-			$links += $msg.text
+			if (-not(Is-Cmd($msg.text))){
+				$links += $msg.text
+			}
+			else {
+				Parse-Cmd($msg.text)
+			}
+			
 		}
 		$prefs.lastchecked = $msg.date
 	}

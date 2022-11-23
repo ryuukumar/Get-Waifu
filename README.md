@@ -37,7 +37,7 @@ Here's a list of domains I support:
 
 | Domain | Support |
 | --- | --- |
-| Reddit | Works for most relevant use cases |
+| Reddit | Works for most relevant use cases (**UPDATE:** Galleries will not work for now.) |
 | Pixiv | Illustrations and manga only |
 | Twitter | Works if you have access to the API |
 | Imgur | Only as a link in a Reddit post |

@@ -1,6 +1,14 @@
 
 
 ### -----------------------------------------
+### Includes
+### -----------------------------------------
+
+. "$PSScriptRoot\fxns.ps1"
+
+
+
+### -----------------------------------------
 ### Preferences
 ### -----------------------------------------
 
@@ -56,14 +64,6 @@ function Img-Id([string]$link) {
 function Vid-Id([string]$link) {
 	[string]${ret}=((select-string -allmatches -pattern "/[A-Za-z0-9_-]{13}/" -inputobject ${link}).matches.value | out-string)
 	$ret = $ret.substring(1, $ret.length - 4)
-	return $ret
-}
-
-function Remove-IllegalChars([string]$str) {
-	$illegalCharsArr = [System.IO.Path]::GetInvalidFileNameChars()
-	$illegalChars = [RegEx]::Escape(-join $illegalCharsArr)
-	$ret = [regex]::Replace($str, "[${illegalChars}]", '_')
-
 	return $ret
 }
 
@@ -144,8 +144,11 @@ if ($metadata.data.children.data.is_gallery -eq $true)
 	}
 	$list | foreach-object {
 		$type = ($metadata.data.children.data.media_metadata.$_.m).substring(6,3)
-		${img_url} = $posttitle + " by " + $postauthor + " on Reddit (image " + $i + ")." + $type
+		$img_url = $metadata.data.children.data.media_metadata.$_.s.u
+		#${img_url} = $posttitle + " by " + $postauthor + " on Reddit (image " + $i + ")." + $type
+		$img_url
 		${filename} = $_ + "." + $type
+		$filename
 		write-host -nonewline "Downloading image... "
 		invoke-webrequest -headers @{'Referer' = 'https://www.reddit.com'} -outfile "${savedir}${filename}" "${img_url}"
 		write-host -nonewline "done"
